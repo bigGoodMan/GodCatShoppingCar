@@ -20,6 +20,7 @@ export default {
     touchEnd(){},
     //放置方法
     leftMove(e, target) {
+      console.log()
       let //slider_handle = target.querySelector(".hhf-slider-handle"),
       slider_right = target.parentNode.querySelector(".hhf-slider-right");
       let lock = true; //是否跳转

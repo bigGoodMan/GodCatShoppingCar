@@ -43,6 +43,9 @@ export default {
       moveRecord: 0, //数字记录移动距离
       touchStartX: 0, //触碰初始位置
       touchEndX: 0, //触碰离开位置
+      touchStartY: 0, //触碰初始位置
+      touchMoveY: 0, //触碰移动位置
+      touchEndY: 0, //触碰离开位置
       rightBarWidth: "", //leftbar的宽度
       moveState: true, //判断是否拖曳过就是触发过touchmove 触发为true（主要用来判断是否跳转）
       moveState2: false //判断当前子组件是否已经拖曳到true最左边
@@ -63,10 +66,13 @@ export default {
       }
       this.rightBarWidth = this.$refs.rightBar.offsetWidth;
       this.touchStartX = e.targetTouches[0].pageX;
+      this.touchStartY=e.targetTouches[0].pageY;
     },
     touchMove(e, target) {
       this.moveState = true;
       this.moveDirectionX = e.targetTouches[0].pageX - this.touchStartX;
+      this.touchMoveY=e.targetTouches[0].pageY;
+     Math.abs(this.touchMoveY-this.touchStartY)>Math.abs(this.moveDirectionX)?'':e.preventDefault();//修复qq浏览器或微信浏览器bug 左滑禁用
         //表示手势向左
       if (this.moveDirectionX < 0) {
         this.moveRecord = this.moveDirectionX;
@@ -78,7 +84,6 @@ export default {
           this.moveDistanceX = "translateX(" + this.moveRecord + "px)";
         }
       }
-      
     },
     touchEnd(e, target) {
       // console.log(e,target)
