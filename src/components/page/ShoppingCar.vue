@@ -99,9 +99,11 @@ if(this.contentArr.includes(id)){
 //删除购物车选中
 if(this.carArr.includes(id)){
   this.carArr.splice(this.carArr.indexOf(id),1)
-}else{
+}else if(this.carArr.length>0){
   //监控着carArr让它触发一下
   this.carArr=this.carArr.join(',').split(',')
+}else {
+  this.carArr=[]
 }
   this.items = this.items.filter((v, i) => v.id!==id )
     },

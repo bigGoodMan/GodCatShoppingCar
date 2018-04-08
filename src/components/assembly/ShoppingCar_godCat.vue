@@ -41,6 +41,8 @@ export default {
       moveDirectionX: 0, //手势方向
       moveDistanceX: "translateX(0px)", //移动距离
       moveRecord: 0, //数字记录移动距离
+      moveLockX:false,//记录每次触碰之后手第一次朝一个方向移动的x轴锁住
+      moveLockY:false,//记录每次触碰之后手第一次朝一个方向移动的y轴锁住
       touchStartX: 0, //触碰初始位置
       touchEndX: 0, //触碰离开位置
       touchStartY: 0, //触碰初始位置
@@ -72,7 +74,7 @@ export default {
       this.moveState = true;
       this.moveDirectionX = e.targetTouches[0].pageX - this.touchStartX;
       this.touchMoveY=e.targetTouches[0].pageY;
-     Math.abs(this.touchMoveY-this.touchStartY)>Math.abs(this.moveDirectionX)?'':e.preventDefault();//修复qq浏览器或微信浏览器bug 左滑禁用
+     Math.abs(this.touchMoveY-this.touchStartY)>Math.abs(this.moveDirectionX)?'':e.preventDefault()//修复qq浏览器或微信浏览器bug 左滑禁用
         //表示手势向左
       if (this.moveDirectionX < 0) {
         this.moveRecord = this.moveDirectionX;
