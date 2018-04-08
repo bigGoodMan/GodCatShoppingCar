@@ -1,0 +1,9 @@
+.hhf-clear::after{
+    content: "";
+    clear: both;
+    width: 0;
+    height: 0;
+    font-size: 0;
+    line-height: 0;
+    display: block;
+}
