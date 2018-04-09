@@ -4,7 +4,7 @@
               <dd class="hhf-slider-handle"
                @touchstart="touchStart($event,$event.currentTarget )" 
                  @touchmove="touchMove($event,$event.currentTarget )"
-                 @touchend.stop.prevent="touchEnd($event,$event.currentTarget )" >
+                 @touchend.stop="touchEnd($event,$event.currentTarget )" >
                   <slot></slot>
               </dd>
               <dd class="hhf-slider-right" ref="rightBar">
@@ -50,7 +50,8 @@ export default {
       touchEndY: 0, //触碰离开位置
       rightBarWidth: "", //leftbar的宽度
       moveState: true, //判断是否拖曳过就是触发过touchmove 触发为true（主要用来判断是否跳转）
-      moveState2: false //判断当前子组件是否已经拖曳到true最左边
+      moveState2: false, //判断当前子组件是否已经拖曳到true最左边
+      pointer:false //防止点击穿透
     };
   },
   methods: {
@@ -104,6 +105,7 @@ export default {
     },
     touchEnd(e, target) {
       if (!this.moveState && this.moveRecord === 0) {
+        e.preventDefault();
         this.$router.push({ path: this.routePath, query: this.routeQuery });
       }
       if (this.moveRecord < 0 && this.moveState2) {
