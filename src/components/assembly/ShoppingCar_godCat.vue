@@ -4,7 +4,7 @@
               <dd class="hhf-slider-handle"
                @touchstart="touchStart($event,$event.currentTarget )" 
                  @touchmove="touchMove($event,$event.currentTarget )"
-                 @touchend.stop="touchEnd($event,$event.currentTarget )" >
+                 @touchend.stop.prevent="touchEnd($event,$event.currentTarget )" >
                   <slot></slot>
               </dd>
               <dd class="hhf-slider-right" ref="rightBar">
@@ -103,7 +103,6 @@ export default {
       }
     },
     touchEnd(e, target) {
-      // console.log(e,target)
       if (!this.moveState && this.moveRecord === 0) {
         this.$router.push({ path: this.routePath, query: this.routeQuery });
       }

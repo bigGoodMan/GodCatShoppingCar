@@ -106,6 +106,7 @@ if(this.carArr.includes(id)){
   this.carArr=[]
 }
   this.items = this.items.filter((v, i) => v.id!==id )
+  this.restoreDrag(false)
     },
     restoreDrag(check) {
       //是否还原方法必填（把所有侧滑归位）
