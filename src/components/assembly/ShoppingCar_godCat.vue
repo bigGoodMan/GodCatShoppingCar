@@ -26,8 +26,8 @@ export default {
           (this.moveDirectionX = 0), //手势方向
           (this.moveDistanceX = "translateX(0px)"), //移动距离
           (this.moveRecord = 0), //数字记录移动距离
-          (this.touchStartX = 0), //触碰初始位置
-          (this.touchEndX = 0), //触碰离开位置
+         // (this.touchStartX = 0), //触碰初始位置  watch监听 导致删除之后第一次侧滑失效 touchStartX始终为0
+          //(this.touchEndX = 0), //触碰离开位置
           (this.moveState = true), //是否移动了
           (this.moveState2 = false);
         this.$emit("eventdrag", false);
@@ -41,8 +41,8 @@ export default {
       moveDirectionX: 0, //手势方向
       moveDistanceX: "translateX(0px)", //移动距离
       moveRecord: 0, //数字记录移动距离
-      moveLockX:false,//记录每次触碰之后手第一次朝一个方向移动的x轴锁住
-      moveLockY:false,//记录每次触碰之后手第一次朝一个方向移动的y轴锁住
+      moveLockX: false, //记录每次触碰之后手第一次朝一个方向移动的x轴锁住
+      moveLockY: false, //记录每次触碰之后手第一次朝一个方向移动的y轴锁住
       touchStartX: 0, //触碰初始位置
       touchEndX: 0, //触碰离开位置
       touchStartY: 0, //触碰初始位置
@@ -57,8 +57,8 @@ export default {
     /**
      * 删除当前购物车
      **/
-    touchDelete(e,target){
-      this.$emit('delete-car',e,target,this.routeQuery.id)
+    touchDelete(e, target) {
+      this.$emit("delete-car", e, target, this.routeQuery.id);
     },
     touchStart(e, target) {
       this.moveState = false;
@@ -66,21 +66,36 @@ export default {
         this.$emit("eventdrag", false);
         //return false;
       }
-      this.rightBarWidth = this.$refs.rightBar.offsetWidth;
-      this.touchStartX = e.targetTouches[0].pageX;
-      this.touchStartY=e.targetTouches[0].pageY;
+      this.rightBarWidth = this.$refs.rightBar.offsetWidth
+      this.touchStartY = e.targetTouches[0].pageY
+      this.touchStartX = e.targetTouches[0].pageX
+      this.moveLockX = false
+      this.moveLockY = false
     },
     touchMove(e, target) {
       this.moveState = true;
       this.moveDirectionX = e.targetTouches[0].pageX - this.touchStartX;
-      this.touchMoveY=e.targetTouches[0].pageY;
-     Math.abs(this.touchMoveY-this.touchStartY)>Math.abs(this.moveDirectionX)?'':e.preventDefault()//修复qq浏览器或微信浏览器bug 左滑禁用
-        //表示手势向左
+      this.touchMoveY = e.targetTouches[0].pageY;
+      //修复qq浏览器或微信浏览器bug 左滑禁用(同时防止滑动的时候会滚动 滚动的时候会滑动)
+      if (
+        Math.abs(this.touchMoveY - this.touchStartY) >
+          Math.abs(this.moveDirectionX) &&
+        !this.moveLockX
+      ) {
+        this.moveLockY = true;
+      } else if (!this.moveLockY) {
+        this.moveLockX = true;
+        e.preventDefault();
+      }
+      if(this.moveLockY){
+        return
+      }
+      //表示手势向左
       if (this.moveDirectionX < 0) {
         this.moveRecord = this.moveDirectionX;
         this.moveDistanceX = "translateX(" + this.moveRecord + "px)";
         this.bgcolor = "#" + Math.abs(this.moveRecord);
-          //不能大于leftbar宽度
+        //不能大于leftbar宽度
         if (Math.abs(this.moveRecord) > this.rightBarWidth) {
           this.moveRecord = -this.rightBarWidth;
           this.moveDistanceX = "translateX(" + this.moveRecord + "px)";

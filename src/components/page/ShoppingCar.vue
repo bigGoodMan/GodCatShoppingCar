@@ -199,6 +199,7 @@ if(this.carArr.includes(id)){
   position: absolute;
   box-sizing: border-box;
   overflow-y: auto;
+  user-select: none;
 }
 .car-list {
   display: flex;
